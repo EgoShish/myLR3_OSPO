@@ -3,353 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Резюме — Личная страница</title>
-    <!-- Подключение стилей -->
+    <title>Лабораторная работа №1 | Инструментарий</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Шрифт Inter от Google Fonts (единственная внешняя зависимость — только шрифт) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- ============================================ -->
-    <!-- МОДАЛЬНОЕ ОКНО АНКЕТИРОВАНИЯ                 -->
-    <!-- Появляется при первом посещении страницы     -->
-    <!-- ============================================ -->
-    <div id="surveyOverlay" class="survey-overlay">
-        <div class="survey-modal">
-            <!-- Прогресс-бар анкетирования -->
-            <div class="survey-progress">
-                <div class="survey-progress-bar" id="surveyProgressBar"></div>
-            </div>
-            <div class="survey-step-count" id="surveyStepCount">Шаг 1 из 5</div>
-
-            <!-- Шаг 1: Основная информация -->
-            <div class="survey-step active" data-step="1">
-                <h2 class="survey-title">👋 Основная информация</h2>
-                <div class="survey-field">
-                    <label for="surveyName">Ваше имя</label>
-                    <input type="text" id="surveyName" placeholder="Иван Иванов" required>
-                </div>
-                <div class="survey-field">
-                    <label for="surveyTitle">Должность</label>
-                    <input type="text" id="surveyTitle" placeholder="Frontend-разработчик">
-                </div>
-                <div class="survey-field">
-                    <label for="surveySummary">Краткое описание о себе</label>
-                    <textarea id="surveySummary" rows="3" placeholder="Опытный разработчик с 5-летним стажем..."></textarea>
-                </div>
-                <div class="survey-field">
-                    <label for="surveyAvatar">URL аватара (необязательно)</label>
-                    <input type="url" id="surveyAvatar" placeholder="https://example.com/photo.jpg">
-                </div>
-                <button class="survey-btn survey-btn-next" onclick="nextStep()">Далее →</button>
-            </div>
-
-            <!-- Шаг 2: Опыт работы -->
-            <div class="survey-step" data-step="2">
-                <h2 class="survey-title">💼 Опыт работы</h2>
-                <div id="experienceEntries">
-                    <!-- Динамически добавляемые блоки опыта -->
-                    <div class="entry-block" data-entry="exp">
-                        <div class="survey-field">
-                            <label>Должность</label>
-                            <input type="text" class="exp-position" placeholder="Senior Developer">
-                        </div>
-                        <div class="survey-field">
-                            <label>Компания</label>
-                            <input type="text" class="exp-company" placeholder="Google">
-                        </div>
-                        <div class="survey-field">
-                            <label>Период</label>
-                            <input type="text" class="exp-period" placeholder="2021 — настоящее время">
-                        </div>
-                        <div class="survey-field">
-                            <label>Описание обязанностей</label>
-                            <textarea class="exp-desc" rows="2" placeholder="Разработка и поддержка..."></textarea>
-                        </div>
-                    </div>
-                </div>
-                <button class="survey-btn survey-btn-add" onclick="addEntry('exp')">+ Добавить место работы</button>
-                <div class="survey-nav">
-                    <button class="survey-btn survey-btn-prev" onclick="prevStep()">← Назад</button>
-                    <button class="survey-btn survey-btn-next" onclick="nextStep()">Далее →</button>
-                </div>
-            </div>
-
-            <!-- Шаг 3: Образование -->
-            <div class="survey-step" data-step="3">
-                <h2 class="survey-title">🎓 Образование</h2>
-                <div id="educationEntries">
-                    <div class="entry-block" data-entry="edu">
-                        <div class="survey-field">
-                            <label>Учебное заведение / Курс</label>
-                            <input type="text" class="edu-school" placeholder="МГУ им. Ломоносова">
-                        </div>
-                        <div class="survey-field">
-                            <label>Специальность</label>
-                            <input type="text" class="edu-degree" placeholder="Информатика и вычислительная техника">
-                        </div>
-                        <div class="survey-field">
-                            <label>Годы обучения</label>
-                            <input type="text" class="edu-years" placeholder="2015 — 2019">
-                        </div>
-                    </div>
-                </div>
-                <button class="survey-btn survey-btn-add" onclick="addEntry('edu')">+ Добавить образование</button>
-                <div class="survey-nav">
-                    <button class="survey-btn survey-btn-prev" onclick="prevStep()">← Назад</button>
-                    <button class="survey-btn survey-btn-next" onclick="nextStep()">Далее →</button>
-                </div>
-            </div>
-
-            <!-- Шаг 4: Навыки -->
-            <div class="survey-step" data-step="4">
-                <h2 class="survey-title">🛠 Навыки</h2>
-                <div class="survey-field">
-                    <label for="surveyTechSkills">Технические навыки (через запятую)</label>
-                    <input type="text" id="surveyTechSkills" placeholder="JavaScript, React, Node.js, Python, Git">
-                </div>
-                <div class="survey-field">
-                    <label for="surveySoftSkills">Soft-навыки (через запятую)</label>
-                    <input type="text" id="surveySoftSkills" placeholder="Командная работа, Лидерство, Коммуникация">
-                </div>
-                <div class="survey-nav">
-                    <button class="survey-btn survey-btn-prev" onclick="prevStep()">← Назад</button>
-                    <button class="survey-btn survey-btn-next" onclick="nextStep()">Далее →</button>
-                </div>
-            </div>
-
-            <!-- Шаг 5: Контакты -->
-            <div class="survey-step" data-step="5">
-                <h2 class="survey-title">📬 Контакты</h2>
-                <div class="survey-field">
-                    <label for="surveyEmail">Email</label>
-                    <input type="email" id="surveyEmail" placeholder="ivan@example.com">
-                </div>
-                <div class="survey-field">
-                    <label for="surveyPhone">Телефон</label>
-                    <input type="tel" id="surveyPhone" placeholder="+7 (999) 123-45-67">
-                </div>
-                <div class="survey-field">
-                    <label for="surveyLocation">Город</label>
-                    <input type="text" id="surveyLocation" placeholder="Москва, Россия">
-                </div>
-                <div class="survey-field">
-                    <label for="surveyLinkedIn">LinkedIn / GitHub URL</label>
-                    <input type="url" id="surveyLinkedIn" placeholder="https://github.com/username">
-                </div>
-                <div class="survey-nav">
-                    <button class="survey-btn survey-btn-prev" onclick="prevStep()">← Назад</button>
-                    <button class="survey-btn survey-btn-finish" onclick="finishSurvey()">✨ Создать резюме</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================ -->
-    <!-- КНОПКА РЕДАКТИРОВАНИЯ (появляется после     -->
-    <!-- заполнения анкеты)                           -->
-    <!-- ============================================ -->
-    <button id="editBtn" class="edit-btn" title="Редактировать данные" style="display:none;">
-        ✏️
-    </button>
-
-    <!-- ============================================ -->
-    <!-- НАВИГАЦИЯ                                    -->
-    <!-- ============================================ -->
-    <nav class="navbar" id="navbar">
-        <div class="container navbar-inner">
-            <a href="#" class="nav-logo" id="navLogo">Resume</a>
-            <button class="nav-toggle" id="navToggle" aria-label="Меню">
-                <span></span><span></span><span></span>
-            </button>
-            <ul class="nav-links" id="navLinks">
-                <li><a href="#about" class="nav-link">Обо мне</a></li>
-                <li><a href="#experience" class="nav-link">Опыт</a></li>
-                <li><a href="#education" class="nav-link">Образование</a></li>
-                <li><a href="#skills" class="nav-link">Навыки</a></li>
-                <li><a href="#contact" class="nav-link">Контакты</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- ============================================ -->
-    <!-- HERO-СЕКЦИЯ                                  -->
-    <!-- ============================================ -->
-    <header class="hero" id="about">
-        <div class="container hero-inner">
-            <div class="hero-content animate-on-scroll">
-                <div class="hero-avatar" id="heroAvatar">
-                    <span class="avatar-placeholder">👤</span>
-                </div>
-                <h1 class="hero-name" id="heroName">Ваше Имя</h1>
-                <p class="hero-title" id="heroTitle">Ваша должность</p>
-                <p class="hero-summary" id="heroSummary">Заполните анкету, чтобы увидеть ваше резюме</p>
-                <div class="hero-buttons">
-                    <a href="#" class="btn btn-primary" id="downloadBtn" onclick="handleDownload(event)">
-                        📥 Скачать резюме
-                    </a>
-                    <a href="#contact" class="btn btn-outline" id="contactBtn">
-                        💬 Связаться со мной
-                    </a>
-                </div>
-                <div class="hero-contact-info" id="heroContactInfo">
-                    <!-- Динамически заполняется: email, телефон, город -->
-                </div>
-            </div>
-            <!-- Декоративный элемент справа -->
-            <div class="hero-decoration animate-on-scroll">
-                <div class="deco-circle deco-circle-1"></div>
-                <div class="deco-circle deco-circle-2"></div>
-                <div class="deco-circle deco-circle-3"></div>
-            </div>
-        </div>
+    <!-- Навигация по вкладкам -->
+    <header class="app-header">
+        <h1 class="app-title">Студенческий инструментарий</h1>
+        <nav class="tabs-nav">
+            <button class="tab-btn active" data-target="calc">🧮 Калькулятор</button>
+            <button class="tab-btn" data-target="indicator">📊 Индикатор</button>
+            <button class="tab-btn" data-target="titlegen">📄 Титульник</button>
+        </nav>
     </header>
 
-    <!-- ============================================ -->
-    <!-- ОПЫТ РАБОТЫ                                  -->
-    <!-- ============================================ -->
-    <section class="section section-light" id="experience">
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">💼 Опыт работы</h2>
-            <div class="timeline" id="experienceTimeline">
-                <!-- Динамически заполняется из анкеты -->
-                <div class="timeline-item animate-on-scroll">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <h3 class="timeline-position">Заполните анкету</h3>
-                        <p class="timeline-company">—</p>
-                        <p class="timeline-period">—</p>
-                        <p class="timeline-desc">Ваш опыт работы появится здесь</p>
-                    </div>
+    <main class="container">
+        <!-- 1. Калькулятор -->
+        <section id="calc" class="panel active-panel">
+            <div class="calculator">
+                <div class="calc-inputs">
+                    <input type="text" id="num1" class="calc-input active-input" placeholder="Число 1" readonly>
+                    <select id="operator" class="calc-select">
+                        <option value="+">+</option>
+                        <option value="-">-</option>
+                        <option value="*">×</option>
+                        <option value="/">÷</option>
+                    </select>
+                    <input type="text" id="num2" class="calc-input" placeholder="Число 2" readonly>
                 </div>
+
+                <div class="calc-result-box">
+                    <span>Результат:</span>
+                    <div id="result-display" class="result-field">—</div>
+                </div>
+
+                <div class="calc-keypad">
+                    <button data-val="7">7</button><button data-val="8">8</button><button data-val="9">9</button>
+                    <button data-val="4">4</button><button data-val="5">5</button><button data-val="6">6</button>
+                    <button data-val="1">1</button><button data-val="2">2</button><button data-val="3">3</button>
+                    <button data-val="0" class="key-zero">0</button>
+                    <button id="clear-key" class="key-clear">C</button>
+                </div>
+                <button id="calc-btn" class="action-btn primary-btn">📐 Посчитать</button>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ============================================ -->
-    <!-- ОБРАЗОВАНИЕ                                  -->
-    <!-- ============================================ -->
-    <section class="section section-white" id="education">
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">🎓 Образование</h2>
-            <div class="cards-grid" id="educationGrid">
-                <!-- Динамически заполняется из анкеты -->
-                <div class="card animate-on-scroll">
-                    <div class="card-icon">🏛️</div>
-                    <h3 class="card-title">Заполните анкету</h3>
-                    <p class="card-subtitle">—</p>
-                    <p class="card-years">—</p>
+        <!-- 2. Индикатор -->
+        <section id="indicator" class="panel">
+            <div class="indicator-card">
+                <h2 class="section-title">Стрелочный индикатор (0–10)</h2>
+                <div class="range-container" id="range-container">
+                    <input type="range" id="range-slider" min="0" max="10" step="1" value="0">
+                    <div class="range-ticks">
+                        <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span>
+                        <span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                    </div>
                 </div>
+                <div class="indicator-value-display">Текущее: <span id="range-val-text">0</span></div>
+                
+                <div class="indicator-keypad">
+                    <button data-ind="1">1</button><button data-ind="2">2</button><button data-ind="3">3</button>
+                    <button data-ind="4">4</button><button data-ind="5">5</button><button data-ind="6">6</button>
+                    <button data-ind="7">7</button><button data-ind="8">8</button><button data-ind="9">9</button>
+                    <button data-ind="0">0</button>
+                    <button id="set-ind-btn" class="action-btn secondary-btn">⚡ Установить</button>
+                </div>
+                <p class="hint-text">Введите число кнопками и нажмите «Установить». Если > 5 — сработает индикация.</p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ============================================ -->
-    <!-- НАВЫКИ                                       -->
-    <!-- ============================================ -->
-    <section class="section section-light" id="skills">
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">🛠 Навыки</h2>
-            <div class="skills-wrapper">
-                <div class="skills-column animate-on-scroll">
-                    <h3 class="skills-heading">Технические</h3>
-                    <div class="skills-list" id="techSkillsList">
-                        <!-- Динамически заполняется -->
-                        <span class="skill-tag placeholder">Заполните анкету</span>
-                    </div>
-                </div>
-                <div class="skills-column animate-on-scroll">
-                    <h3 class="skills-heading">Soft Skills</h3>
-                    <div class="skills-list" id="softSkillsList">
-                        <!-- Динамически заполняется -->
-                        <span class="skill-tag placeholder">Заполните анкету</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================ -->
-    <!-- КОНТАКТНАЯ ФОРМА                             -->
-    <!-- ============================================ -->
-    <section class="section section-white" id="contact">
-        <div class="container">
-            <h2 class="section-title animate-on-scroll">📬 Свяжитесь со мной</h2>
-            <div class="contact-wrapper">
-                <!-- Контактная информация -->
-                <div class="contact-info animate-on-scroll">
-                    <h3 class="contact-info-title">Контактная информация</h3>
-                    <div class="contact-item" id="contactEmailItem">
-                        <span class="contact-icon">📧</span>
-                        <div>
-                            <p class="contact-label">Email</p>
-                            <p class="contact-value" id="contactEmail">—</p>
-                        </div>
-                    </div>
-                    <div class="contact-item" id="contactPhoneItem">
-                        <span class="contact-icon">📱</span>
-                        <div>
-                            <p class="contact-label">Телефон</p>
-                            <p class="contact-value" id="contactPhone">—</p>
-                        </div>
-                    </div>
-                    <div class="contact-item" id="contactLocationItem">
-                        <span class="contact-icon">📍</span>
-                        <div>
-                            <p class="contact-label">Город</p>
-                            <p class="contact-value" id="contactLocation">—</p>
-                        </div>
-                    </div>
-                    <div class="contact-item" id="contactLinkItem">
-                        <span class="contact-icon">🔗</span>
-                        <div>
-                            <p class="contact-label">Профиль</p>
-                            <p class="contact-value" id="contactLink">—</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Форма обратной связи -->
-                <form class="contact-form animate-on-scroll" id="contactForm" novalidate>
+        <!-- 3. Генератор титульного листа -->
+        <section id="titlegen" class="panel">
+            <div class="form-card">
+                <h2 class="section-title">Генератор титульного листа</h2>
+                <form id="title-form">
                     <div class="form-group">
-                        <label for="formName">Ваше имя</label>
-                        <input type="text" id="formName" name="name" placeholder="Как вас зовут?" required>
-                        <span class="form-error" id="formNameError"></span>
+                        <label for="dept">Кафедра / Институт</label>
+                        <input type="text" id="dept" placeholder="Институт цифровых систем" required>
                     </div>
                     <div class="form-group">
-                        <label for="formEmail">Email</label>
-                        <input type="email" id="formEmail" name="email" placeholder="your@email.com" required>
-                        <span class="form-error" id="formEmailError"></span>
+                        <label for="grp">Группа</label>
+                        <input type="text" id="grp" placeholder="АДБ-22-06" required>
                     </div>
                     <div class="form-group">
-                        <label for="formMessage">Сообщение</label>
-                        <textarea id="formMessage" name="message" rows="5" placeholder="Напишите ваше сообщение..." required></textarea>
-                        <span class="form-error" id="formMessageError"></span>
+                        <label for="student">ФИО студента</label>
+                        <input type="text" id="student" placeholder="Иванов И.И." required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-full" id="formSubmitBtn">
-                        🚀 Отправить сообщение
-                    </button>
-                    <!-- Сообщение об успешной отправке -->
-                    <div class="form-success" id="formSuccess" style="display:none;">
-                        ✅ Сообщение успешно отправлено!
+                    <div class="form-group">
+                        <label for="teacher">ФИО преподавателя</label>
+                        <input type="text" id="teacher" placeholder="Ковалев И.А." required>
                     </div>
+                    <button type="submit" class="action-btn generate-btn">🚀 Сгенерировать и перейти</button>
                 </form>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- ============================================ -->
-    <!-- ФУТЕР                                        -->
-    <!-- ============================================ -->
-    <footer class="footer">
-        <div class="container">
-            <p class="footer-text" id="footerText">© 2025 — Все права защищены</p>
-        </div>
-    </footer>
-
-    <!-- Подключение JavaScript -->
     <script src="script.js"></script>
 </body>
 </html>
