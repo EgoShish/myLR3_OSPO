@@ -2,14 +2,33 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8">
-    <title>Индивидуальное задание 2 и 3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мое Резюме и Анкета</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h2>Анкета пользователя</h2>
-    
-    <div id="tableContainer">Данные собираются, пожалуйста, ответьте на вопросы в окнах...</div>
+    <div class="main-container">
+        <section class="resume-card">
+            <img src="https://via.placeholder.com/150" alt="Фото профиля" class="profile-img">
+            
+            <h1 id="userLastName">Иванов</h1>
+            <h2 id="userFirstName">Игорь</h2>
+            <p class="description">Студент направления «Информационные системы и технологии»</p>
+            
+            <div class="controls">
+                <input type="text" id="lastNameInput" placeholder="Введите новую фамилию">
+                <button id="changeNameBtn">Изменить фамилию</button>
+            </div>
+        </section>
+
+        <section class="table-container">
+            <h3>Анкета пользователя</h3>
+            <div id="tableOutput">
+                <button id="startSurveyBtn">Пройти анкетирование</button>
+            </div>
+        </section>
+    </div>
 
     <script src="script.js"></script>
 </body>
