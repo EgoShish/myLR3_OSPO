@@ -1,0 +1,39 @@
+/* Оформление страницы */
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #f9f9f9;
+}
+
+h2 {
+    color: #333;
+}
+
+/* Стили для таблицы */
+.user-table {
+    width: 100%;
+    max-width: 500px;
+    border-collapse: collapse; /* Схлопывание двойных рамок в одну */
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Стили ячеек: рамки, внутренние отступы и выравнивание текста */
+.user-table th, .user-table td {
+    border: 1px solid #ccc; 
+    padding: 12px;         
+    text-align: left;      
+}
+
+/* Стили шапки таблицы */
+.user-table th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+/* Эффект "зебры" (подсветка четных строк) */
+.user-table tr:nth-child(even) {
+    background-color: #f2f2f2; 
+}
