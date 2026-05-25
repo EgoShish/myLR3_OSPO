@@ -1,63 +1,84 @@
-// 1. Запрос имени пользователя
-let name = prompt("Введите ваше имя:", "Иван");
-if (name === null || name.trim() === "") {
-    name = "Не указано";
-}
+// Ждем загрузки DOM дерева
+document.addEventListener("DOMContentLoaded", () => {
 
-// 2. Цикл запроса возраста с защитой от "Отмены" и проверкой через confirm
-let age;
-while (true) {
-    age = prompt("Введите ваш возраст:");
-    
-    // Перехват нажатия кнопки "Отмена" или пустого ввода
-    if (age === null || age.trim() === "") {
-        alert("Вы не ввели возраст! Пожалуйста, повторите ввод.");
-        continue; // Возврат в начало цикла
-    }
+    // --- ЛОГИКА ДЛЯ РЕЗЮМЕ (Задание 4) ---
+    const changeNameBtn = document.getElementById("changeNameBtn");
+    const lastNameInput = document.getElementById("lastNameInput");
+    const userLastName = document.getElementById("userLastName");
 
-    // Проверка, что введено именно число
-    if (isNaN(age) || parseInt(age) < 0) {
-        alert("Возраст должен быть корректным числом.");
-        continue; // Возврат в начало цикла
-    }
+    changeNameBtn.addEventListener("click", () => {
+        const newName = lastNameInput.value.trim();
+        if (newName !== "") {
+            userLastName.innerText = newName; // Меняем текст фамилии
+            lastNameInput.value = ""; // Очищаем поле ввода
+        } else {
+            alert("Пожалуйста, введите фамилию в поле!");
+        }
+    });
 
-    // Запрос подтверждения правильности ввода
-    let isCorrect = confirm(`Вы ввели: ${age} лет. Всё верно?`);
-    if (isCorrect) {
-        break; // Выход из бесконечного цикла, возраст принят
-    } else {
-        alert("Хорошо, давайте введем возраст заново.");
-    }
-}
 
-// 3. Запрос статуса студента
-let isStudent = confirm("Вы являетесь студентом?");
+    // --- ЛОГИКА ДЛЯ АНКЕТЫ-ТАБЛИЦЫ (Задания 2 и 3) ---
+    const startSurveyBtn = document.getElementById("startSurveyBtn");
+    const tableOutput = document.getElementById("tableOutput");
 
-// 4. Находим контейнер на HTML-странице по его ID
-let container = document.getElementById("tableContainer");
+    startSurveyBtn.addEventListener("click", () => {
+        // 1. Запрос имени
+        let name = prompt("Введите ваше имя для анкеты:", "Иван");
+        if (name === null || name.trim() === "") {
+            name = "Не указано";
+        }
 
-// 5. Динамически создаем HTML-структуру таблицы и записываем в нее наши переменные
-container.innerHTML = `
-    <table class="user-table">
-        <thead>
-            <tr>
-                <th>Параметр</th>
-                <th>Значение анкеты</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>Имя</strong></td>
-                <td>${name}</td>
-            </tr>
-            <tr>
-                <td><strong>Возраст</strong></td>
-                <td>${age}</td>
-            </tr>
-            <tr>
-                <td><strong>Статус студента</strong></td>
-                <td>${isStudent ? "Да, студент" : "Нет, не студент"}</td>
-            </tr>
-        </tbody>
-    </table>
-`;
+        // 2. Запрос возраста с циклом проверки на "Отмену" и "Confirm"
+        let age;
+        while (true) {
+            age = prompt("Введите ваш возраст для анкеты:");
+            
+            if (age === null || age.trim() === "") {
+                alert("Вы не ввели возраст! Пожалуйста, повторите ввод.");
+                continue; 
+            }
+
+            if (isNaN(age) || parseInt(age) < 0) {
+                alert("Возраст должен быть корректным числом.");
+                continue;
+            }
+
+            // Окно повторного подтверждения (если отмена — вернет в цикл ввода)
+            let isCorrect = confirm(`Вы ввели возраст: ${age}. Всё верно?`);
+            if (isCorrect) {
+                break; // Возраст принят, выходим
+            } else {
+                alert("Давайте исправим возраст.");
+            }
+        }
+
+        // 3. Запрос статуса студента
+        let isStudent = confirm("Вы являетесь студентом?");
+
+        // 4. Отрисовка таблицы вместо кнопки
+        tableOutput.innerHTML = `
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Параметр</th>
+                        <th>Значение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Имя</strong></td>
+                        <td>${name}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Возраст</strong></td>
+                        <td>${age}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Студент</strong></td>
+                        <td>${isStudent ? "Да" : "Нет"}</td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+    });
+});
