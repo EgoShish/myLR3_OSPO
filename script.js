@@ -1,86 +1,118 @@
 // Ждем загрузки DOM дерева
 document.addEventListener("DOMContentLoaded", () => {
 
-    // --- ЛОГИКА ДЛЯ РЕЗЮМЕ (Задание 4) ---
+    // --- ЭЛЕМЕНТЫ РЕЗЮМЕ ---
     const changeNameBtn = document.getElementById("changeNameBtn");
     const lastNameInput = document.getElementById("lastNameInput");
     const userLastName = document.getElementById("userLastName");
     const userFirstName = document.getElementById("userFirstName");
 
+    // --- ЭЛЕМЕНТЫ АНКЕТЫ ---
+    const startSurveyBtn = document.getElementById("startSurveyBtn");
+    const surveyForm = document.getElementById("surveyForm");
+    const submitSurveyBtn = document.getElementById("submitSurveyBtn");
+    const surveyResult = document.getElementById("surveyResult");
+    
+    // Чекбоксы и текстовое поле
+    const skillMath = document.getElementById("skillMath");
+    const skillProg = document.getElementById("skillProg");
+    const extraInfo = document.getElementById("extraInfo");
+
+    // Глобальные переменные для хранения данных пользователя
+    let userName = "";
+    let userAge = 0;
+    let userGender = "";
+
+    // --- ЛОГИКА РЕЗЮМЕ (изменение фамилии) ---
     changeNameBtn.addEventListener("click", () => {
         const newName = lastNameInput.value.trim();
         if (newName !== "") {
-            userLastName.innerText = newName; // Меняем текст фамилии
-            lastNameInput.value = ""; // Очищаем поле ввода
+            userLastName.innerText = newName;
+            lastNameInput.value = "";
         } else {
             alert("Пожалуйста, введите фамилию в поле!");
         }
     });
 
-
-    // --- ЛОГИКА ДЛЯ АНКЕТЫ-ТАБЛИЦЫ (Задания 2 и 3) ---
-    const startSurveyBtn = document.getElementById("startSurveyBtn");
-    const tableOutput = document.getElementById("tableOutput");
-
+    // --- ЗАПУСК АНКЕТЫ ---
     startSurveyBtn.addEventListener("click", () => {
-        // 1. Запрос имени
-        let name = prompt("Введите ваше имя для анкеты:", "Иван");
-        if (name === null || name.trim() === "") {
-            name = "Не указано";
-        }
-        userFirstName.innerText = name;
-
-        // 2. Запрос возраста с циклом проверки на "Отмену" и "Confirm"
-        let age;
+        // Пункт 2: Проверка имени (только буквы)
         while (true) {
-            age = prompt("Введите ваш возраст для анкеты:");
-            
-            if (age === null || age.trim() === "") {
-                alert("Вы не ввели возраст! Пожалуйста, повторите ввод.");
-                continue; 
+            userName = prompt("Введите ваше имя (только буквы):", "Иван");
+            if (userName === null) return; // Отмена
+            if (/^[a-zA-Zа-яА-ЯёЁ]+$/.test(userName.trim())) {
+                userName = userName.trim();
+                break;
             }
-
-            if (isNaN(age) || parseInt(age) < 0) {
-                alert("Возраст должен быть корректным числом.");
-                continue;
-            }
-
-            // Окно повторного подтверждения (если отмена — вернет в цикл ввода)
-            let isCorrect = confirm(`Вы ввели возраст: ${age}. Всё верно?`);
-            if (isCorrect) {
-                break; // Возраст принят, выходим
-            } else {
-                alert("Давайте исправим возраст.");
-            }
+            alert("Имя должно содержать только буквы!");
         }
 
-        // 3. Запрос статуса студента
-        let isStudent = confirm("Вы являетесь студентом?");
+        // Пункт 2: Проверка возраста (целое неотрицательное число)
+        while (true) {
+            let ageInput = prompt("Введите ваш возраст:", "25");
+            if (ageInput === null) return;
+            let age = parseInt(ageInput);
+            if (!isNaN(age) && age >= 0 && Number.isInteger(age)) {
+                userAge = age;
+                break;
+            }
+            alert("Возраст должен быть целым неотрицательным числом!");
+        }
 
-        // 4. Отрисовка таблицы вместо кнопки
-        tableOutput.innerHTML = `
-            <table class="user-table">
-                <thead>
-                    <tr>
-                        <th>Параметр</th>
-                        <th>Значение</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Имя</strong></td>
-                        <td>${name}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Возраст</strong></td>
-                        <td>${age}</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Студент</strong></td>
-                        <td>${isStudent ? "Да" : "Нет"}</td>
-                    </tr>
-                </tbody>
-            </table>
-        `;
+        // Пункт 2: Проверка пола (только М или Ж)
+        while (true) {
+            userGender = prompt("Введите ваш пол (М или Ж):", "М");
+            if (userGender === null) return;
+            userGender = userGender.trim().toUpperCase();
+            if (userGender === "М" || userGender === "Ж") {
+                break;
+            }
+            alert("Пол должен быть только 'М' или 'Ж'!");
+        }
+
+        // Обновляем имя в резюме
+        userFirstName.innerText = userName;
+
+        // Пункт 5: Скрываем кнопку "Заполнить анкету"
+        startSurveyBtn.style.display = "none";
+        
+        // Показываем форму с чекбоксами
+        surveyForm.style.display = "block";
     });
+
+    // --- ОБРАБОТКА НАЖАТИЯ "МЕНЯ ВОЗЬМУТ" ---
+    submitSurveyBtn.addEventListener("click", () => {
+        // Пункт 4: Запрет изменения чекбоксов после отправки
+        skillMath.disabled = true;
+        skillProg.disabled = true;
+        extraInfo.disabled = true;
+        submitSurveyBtn.disabled = true;
+
+        // Пункт 6: Вызов функции check()
+        const isHired = check();
+        
+        // Пункт 3: Показываем скрытый ранее результат
+        surveyResult.style.display = "block";
+        
+        if (isHired) {
+            surveyResult.innerHTML = `<p style="color: green; font-weight: bold;">Поздравляем, ${userName}! Вы приняты!</p>`;
+        } else {
+            surveyResult.innerHTML = `<p style="color: red; font-weight: bold;">К сожалению, ${userName}, вы не прошли отбор.</p>`;
+        }
+
+        // Дополнительно выводим таблицу с данными
+        surveyForm.insertAdjacentHTML('afterend', `
+            <table class="user-table" style="margin-top: 15px;">
+                <tr><td><strong>Имя</strong></td><td>${userName}</td></tr>
+                <tr><td><strong>Возраст</strong></td><td>${userAge}</td></tr>
+                <tr><td><strong>Пол</strong></td><td>${userGender}</td></tr>
+                <tr><td><strong>Инфо</strong></td><td>${extraInfo.value || "—"}</td></tr>
+            </table>
+        `);
+    });
+
+    // Пункт 6: Функция проверки (знание математики И программирования)
+    function check() {
+        return skillMath.checked && skillProg.checked;
+    }
 });
