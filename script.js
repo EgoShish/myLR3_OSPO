@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const changeNameBtn = document.getElementById("changeNameBtn");
     const lastNameInput = document.getElementById("lastNameInput");
     const userLastName = document.getElementById("userLastName");
+    const userFirstName = document.getElementById("userFirstName");
 
     changeNameBtn.addEventListener("click", () => {
         const newName = lastNameInput.value.trim();
@@ -26,7 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
         let name = prompt("Введите ваше имя для анкеты:", "Иван");
         if (name === null || name.trim() === "") {
             name = "Не указано";
+            userFirstName = "Не указано"
         }
+        userFirstName = name;
 
         // 2. Запрос возраста с циклом проверки на "Отмену" и "Confirm"
         let age;
