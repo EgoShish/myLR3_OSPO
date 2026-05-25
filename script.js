@@ -27,9 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let name = prompt("Введите ваше имя для анкеты:", "Иван");
         if (name === null || name.trim() === "") {
             name = "Не указано";
-            userFirstName = "Не указано"
         }
-        userFirstName = name;
+        userFirstName.innerText = name;
 
         // 2. Запрос возраста с циклом проверки на "Отмену" и "Confirm"
         let age;
